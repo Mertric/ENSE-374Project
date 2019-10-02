@@ -1,0 +1,2 @@
+In this folder we will have our resources that we need for our app. This will include but not limited to graphics, research
+and css files
