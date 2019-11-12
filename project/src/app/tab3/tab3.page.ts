@@ -7,6 +7,24 @@ import { Component } from '@angular/core';
 })
 export class Tab3Page {
 
-  constructor() {}
 
+  constructor() {}
+  eventSource = [];
+  calendar = {
+    mode: 'month',
+    currentDate: new Date()
+  }
+  onEventSelected($event){
+
+  }
+  onTimeSelected($event)
+  {
+
+
+  }
+
+  onViewTitleChanged($event){
+
+    
+  }
 }
