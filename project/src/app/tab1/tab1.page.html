@@ -14,8 +14,10 @@
     <ion-item-sliding *ngFor="let item of todos ">
       <ion-item lines="inset"> 
       <ion-label>
-        <h3> {{item.Title}} </h3>
+        <h3> {{item.Title}}  </h3>
+        <p>{{item.descriptionOf}} | {{item.dateSpan}}</p>
       </ion-label>
+      <ion-note color = "tertiary"> {{item.priorityLevel}} </ion-note>
       </ion-item>
       <ion-item-options>
           <ion-item-option (click) = " remove(item)" color="success">

@@ -38,7 +38,7 @@ export class AddEventToDoPage implements OnInit {
     await this.modalCtrl.dismiss();
   }
   //NEEED to add two seperate add functions --> one for todo and one for event
-
+  // remake the database push function --> calendar
   ngOnInit() {}
   uuidv4 = require("uuid/v4");
   async add() {

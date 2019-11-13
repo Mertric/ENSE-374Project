@@ -34,4 +34,6 @@ export class Tab1Page implements OnInit {
   remove(item) {
     this.db.removeToDo(item.id);
   }
+
+  //MVP2: function to route to detail page --> use getToDo() to get single selected toDo 
 }
