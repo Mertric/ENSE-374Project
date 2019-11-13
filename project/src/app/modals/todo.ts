@@ -1,11 +1,11 @@
 export interface ToDo {
-    tag:string;
-    type:string;
-    date?:string;
-    description?:string;
+    HashTag:string;
+    TypeToDoOrEvent:string;
+    dateSpan?:string;
+    descriptionOf?:string;
     endOf?:string;
-    priority:string;
+    priorityLevel:string;
     startOf:string
-    title: string;
+    titleOf: string;
   }
   

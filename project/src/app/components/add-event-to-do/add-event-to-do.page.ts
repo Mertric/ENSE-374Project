@@ -24,23 +24,20 @@ export class AddEventToDoPage implements OnInit {
     private modalCtrl: ModalController
   ) {}
   toDoSelected: boolean;
-  
-  selectType() {
-      let options = this.form.get('type').value;
-      this.toDoSelected = true;
-      if(options == 'toDo')
-      {
-        this.toDoSelected = true;
-      }
-      else{
-          this.toDoSelected = false;
-        
-      }
 
+  selectType() {
+    let options = this.form.get("type").value;
+    this.toDoSelected = true;
+    if (options == "toDo") {
+      this.toDoSelected = true;
+    } else {
+      this.toDoSelected = false;
+    }
   }
   async closeModal() {
     await this.modalCtrl.dismiss();
   }
+  //NEEED to add two seperate add functions --> one for todo and one for event
 
   ngOnInit() {}
   uuidv4 = require("uuid/v4");
@@ -53,7 +50,7 @@ export class AddEventToDoPage implements OnInit {
     const description = this.form.get("description").value as string;
     const startDate = this.form.get("startDate").value as string;
     const endDate = this.form.get("endDate").value as string;
-  
+
     this.db.eventToDoInfo(
       this.uuidv4(),
       type,
@@ -66,7 +63,8 @@ export class AddEventToDoPage implements OnInit {
       endDate
     );
     this.form.reset();
-    
+
+
   }
   buildForm(): FormGroup {
     return this.fb.group({
@@ -78,7 +76,6 @@ export class AddEventToDoPage implements OnInit {
       description: ["", [Validators.required, Validators.minLength(0)]],
       startDate: ["", [Validators.required]],
       endDate: ["", [Validators.required]]
-    
     });
   }
 }

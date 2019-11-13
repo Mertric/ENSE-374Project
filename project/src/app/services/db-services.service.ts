@@ -3,19 +3,18 @@ import {
   AngularFirestore,
   DocumentData,
   AngularFirestoreCollection,
-  DocumentReference,
+  DocumentReference
 } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AddEventToDoPage } from "../components/add-event-to-do/add-event-to-do.page";
 import { Observable, BehaviorSubject } from "rxjs";
 import { map, take } from "rxjs/operators";
 import { ToDo } from "../modals/todo";
-
 @Injectable({
   providedIn: "root"
 })
 export class DbServicesService {
- private todosCollection: AngularFirestoreCollection<ToDo>;
+  private todosCollection: AngularFirestoreCollection<ToDo>;
   private dataSource = new BehaviorSubject<ToDo[]>([]);
   private todos: Observable<ToDo[]> = this.dataSource.asObservable();
 
@@ -23,7 +22,7 @@ export class DbServicesService {
 
   constructor(private db: AngularFirestore) {
     //this.todos = this.db.collection(this.DATABASE_TODOEVENT).valueChanges();
-    this.todosCollection = db.collection<ToDo>("eventToDoInfo");
+    this.todosCollection = db.collection<ToDo>(this.DATABASE_TODOEVENT);
     this.todos = this.todosCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -35,7 +34,7 @@ export class DbServicesService {
     );
   }
 
-   eventToDoInfo(
+  eventToDoInfo(
     eventToDoUUID: string,
     type: string,
     title: string,
@@ -44,14 +43,14 @@ export class DbServicesService {
     priority: string,
     description: string,
     eventStartDate: string,
-    eventEndDate: string
+    eventEndDate: string 
   ) {
     const dbStore = this.db
       .collection(this.DATABASE_TODOEVENT)
       .doc(eventToDoUUID);
     dbStore.set({
       TypeToDoOrEvent: type,
-      titleOf: title,
+      Title: title,
       dateSpan: date,
       HashTag: tag,
       priorityLevel: priority,

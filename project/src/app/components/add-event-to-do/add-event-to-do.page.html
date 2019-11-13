@@ -8,14 +8,14 @@
         <ion-select
           formControlName="type"
           aria-placeholder="Select One"
-          (ionChange)= "selectType()"
+          (ionChange)="selectType()"
         >
-          <ion-select-option  value="toDo"> ToDo </ion-select-option>
-          <ion-select-option value = "event">Event</ion-select-option>
+          <ion-select-option value="toDo"> ToDo </ion-select-option>
+          <ion-select-option value="event">Event</ion-select-option>
         </ion-select>
       </ion-item>
 
-      <ion-item >
+      <ion-item>
         <ion-label position="floating"> Title </ion-label>
         <ion-input type="text" formControlName="title"> </ion-input>
       </ion-item>

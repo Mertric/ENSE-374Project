@@ -7,7 +7,8 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
-  { path: 'add-event-to-do', loadChildren: './components/add-event-to-do/add-event-to-do.module#AddEventToDoPageModule' }
+  { path: 'add-event-to-do', loadChildren: './components/add-event-to-do/add-event-to-do.module#AddEventToDoPageModule' },  { path: 'details', loadChildren: './components/details/details.module#DetailsPageModule' }
+
   
 ];
 @NgModule({

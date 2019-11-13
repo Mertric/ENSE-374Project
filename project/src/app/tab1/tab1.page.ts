@@ -7,7 +7,7 @@ import {
   AngularFirestore,
   DocumentData,
   AngularFirestoreCollection,
-  DocumentReference,
+  DocumentReference
 } from "@angular/fire/firestore";
 @Component({
   selector: "app-tab1",
@@ -17,7 +17,6 @@ import {
 export class Tab1Page implements OnInit {
   todos: ToDo[];
 
-
   constructor(
     private nav: NavController,
     private modalController: ModalController,
@@ -26,13 +25,13 @@ export class Tab1Page implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.db.getTodos().subscribe(res =>{
-      this.todos =res;
-    })
+    this.db.getTodos().subscribe(res => {
+      console.log(res);
 
+      this.todos = res;
+    });
   }
-  remove(item){
+  remove(item) {
     this.db.removeToDo(item.id);
   }
-    
 }

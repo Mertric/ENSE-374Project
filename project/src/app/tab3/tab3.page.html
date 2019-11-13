@@ -1,21 +1,22 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Calendar
+      {{currentDate}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <calendar 
+  <calendar
     [eventSource]="eventSource"
     [calendarMode]="calendar.mode"
     [currentDate]="calendar.currentDate"
+    (onCurrentDateChanged)="onCurrentDateChanged($event)"
+    (onRangeChanged)="reloadSource(startTime, endTime)"
     (onEventSelected)="onEventSelected($event)"
-    (onTimeSelected)="onTimeSelected($event)"
     (onTitleChanged)="onViewTitleChanged($event)"
-    startHour = "6"
-    endHour = "20"
-    step = "30"
-    startingDayWeek = "1"></calendar>
+    (onTimeSelected)="onTimeSelected($event)"
+    step="30"
+  >
+  </calendar>
 </ion-content>
