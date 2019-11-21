@@ -8,18 +8,19 @@
         <ion-select
           formControlName="type"
           aria-placeholder="Select One"
-          (ionChange)= "selectType()"
+          (ionChange)="selectType()"
         >
-          <ion-select-option  value="toDo"> ToDo </ion-select-option>
-          <ion-select-option value = "event">Event</ion-select-option>
+          <ion-select-option value="toDo"> ToDo </ion-select-option>
+          <ion-select-option value="event">Event</ion-select-option>
         </ion-select>
       </ion-item>
 
-      <ion-item >
+      <ion-item>
         <ion-label position="floating"> Title </ion-label>
         <ion-input type="text" formControlName="title"> </ion-input>
       </ion-item>
 
+      <!-- MVP2:Calendar pop up function to choose date-->
       <ion-item *ngIf="toDoSelected">
         <ion-label position="floating"> Date </ion-label>
         <ion-input type="text" formControlName="date"> </ion-input>
@@ -33,7 +34,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating"> tag </ion-label>
+        <ion-label position="floating"> Tag </ion-label>
         <ion-input type="text" formControlName="tag"> </ion-input>
       </ion-item>
       <ion-item>
@@ -50,6 +51,8 @@
         <ion-label position="floating"> Description </ion-label>
         <ion-input type="text" formControlName="description"> </ion-input>
       </ion-item>
+
+      <!-- ADD notification boolean-->
     </ion-list>
     <ion-button file="solid" expand="block" color="dark" type="submit"
       >Add</ion-button
