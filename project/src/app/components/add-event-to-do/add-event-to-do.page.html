@@ -20,17 +20,35 @@
         <ion-input type="text" formControlName="title"> </ion-input>
       </ion-item>
 
-      <!-- MVP2:Calendar pop up function to choose date-->
       <ion-item *ngIf="toDoSelected">
-        <ion-label position="floating"> Date </ion-label>
-        <ion-input type="text" formControlName="date"> </ion-input>
+        <ion-label position="floating"> Date (MM/DD/YY) </ion-label>
+        <ion-datetime
+          min="2019"
+          max="2020"
+          displayFormat="MMM DD, YY"
+          monthShortNames="Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"
+          formControlName="date"
+        ></ion-datetime>
+        <!-- auto update max year both for toDo and Event-->
       </ion-item>
 
       <ion-item *ngIf="!toDoSelected">
-        <ion-label position="floating"> Start Date </ion-label>
-        <ion-input type="text" formControlName="startDate"> </ion-input>
-        <ion-label position="floating"> End Date </ion-label>
-        <ion-input type="text" formControlName="endDate"> </ion-input>
+        <ion-label position="floating"> Start Date (MM/DD/YY) </ion-label>
+        <ion-datetime
+          min="2019"
+          max="2020"
+          displayFormat="MMM DD, YY h:mm A"
+          monthShortNames="Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"
+          formControlName="startDate"
+        ></ion-datetime>
+        <ion-label position="floating"> End Date (MM/DD/YY) </ion-label>
+        <ion-datetime
+          min="2019"
+          max="2020"
+          displayFormat=" MMM DD, YY h:mm A"
+          monthShortNames="Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"
+          formControlName="endDate"
+        ></ion-datetime>
       </ion-item>
 
       <ion-item>
@@ -52,10 +70,25 @@
         <ion-input type="text" formControlName="description"> </ion-input>
       </ion-item>
 
-      <!-- ADD notification boolean-->
+      <!-- fix THIS  formControlName is not getting read as a boolean value ... Potential change set notifications on the date instead of making a new notification div-->
+      <ion-label>Set Notification</ion-label>
+      <ion-item>
+        <ion-checkbox checked="false" (click)="noti = 'show'"></ion-checkbox>
+        <ion-item class="noti-box" [ngClass]='noti'>
+          <ion-label>Set mm/dd h:mm</ion-label>
+         <ion-datetime
+          min="2019"
+          max="2020"
+          displayFormat="MMM DD h:mm A"
+          monthShortNames="Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"
+          formControlName="setNotiTime"
+        ></ion-datetime>
+        </ion-item>
+      </ion-item>
+
+
     </ion-list>
     <ion-button file="solid" expand="block" color="dark" type="submit"
-      >Add</ion-button
-    >
+      >Add</ion-button>
   </form>
 </ion-content>

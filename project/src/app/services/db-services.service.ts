@@ -43,7 +43,9 @@ export class DbServicesService {
     priority: string,
     description: string,
     eventStartDate: string,
-    eventEndDate: string 
+    eventEndDate: string,
+    notificationTime: string
+
   ) {
     const dbStore = this.db
       .collection(this.DATABASE_TODOEVENT)
@@ -56,7 +58,8 @@ export class DbServicesService {
       priorityLevel: priority,
       descriptionOf: description,
       startOf: eventStartDate,
-      endOf: eventEndDate
+      endOf: eventEndDate,
+      notify: notificationTime
     });
   }
 
@@ -72,5 +75,12 @@ export class DbServicesService {
 
   removeToDo(id) {
     return this.todosCollection.doc(id).delete();
+  }
+
+  userInfoToDB(userID:string,email:string , password:string)
+  {
+    const dbStore = this.db.collection("Users").doc(userID);
+
+    dbStore.set({uuid:userID,emailAddress: email, userPassword: password}).then(function(data){console.log("User created")});
   }
 }
