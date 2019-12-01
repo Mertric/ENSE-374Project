@@ -2,7 +2,21 @@ import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { NgCalendarModule } from "ionic2-calendar";
 import { ToDo } from "../modals/todo";
 import { DbServicesService } from "../services/db-services.service";
-import { CalendarComponent, IEvent, ITimeSelected } from "ionic2-calendar/calendar";
+import {
+  CalendarComponent,
+  IEvent,
+  ITimeSelected
+} from "ionic2-calendar/calendar";
+import {
+  AngularFirestore,
+  DocumentData,
+  AngularFirestoreCollection,
+  DocumentReference
+} from "@angular/fire/firestore";
+import { Observable, BehaviorSubject } from "rxjs";
+import { map, take } from "rxjs/operators";
+
+
 @Component({
   selector: "app-tab3",
   templateUrl: "tab3.page.html",
@@ -12,15 +26,6 @@ export class Tab3Page implements AfterViewInit {
   @ViewChild(CalendarComponent, { static: true })
   aCalandar: CalendarComponent;
 
-  eventSource: IEvent[] = [];
-
-  event = {
-    title: " ",
-    description: " ",
-    startTime: " ",
-    endTime: " ",
-    allday: false
-  };
   // eventSource: ToDo[];
   calendar = {
     mode: "month",
@@ -28,17 +33,53 @@ export class Tab3Page implements AfterViewInit {
   };
   viewTitle = " ";
 
+  private todosCollection: AngularFirestoreCollection<ToDo>;
+  private dataSource = new BehaviorSubject<ToDo[]>([]);
+  private todos: Observable<ToDo[]> = this.dataSource.asObservable();
+  private DATABASE_TODOEVENT = "eventToDoInfo";
 
-  constructor(private db: DbServicesService) {}
+  eventSource: {
+    title: string,
+    startTime: Date,
+    endTime: Date,
+    allDay: boolean
+  }[] = [];
 
+  event = {
+    title: "",
+    description: "",
+    startOf: "",
+    endOf: "",
+    allday: false
+  };
+  
+    
+  
+  constructor(private db: DbServicesService , private eventDB: AngularFirestore) {
+    // this.eventDB.collection(this.DATABASE_TODOEVENT,ref => ref.where('TypeToDoOrEvent', '==','event')).snapshotChanges().subscribe(colSnap => {
+    //   // colSnap.forEach(snap => {
+    //   //     let event: any = snap.payload.doc;
+    //   //     console.log(snap.payload.doc)
+    //   //     console.log("this is a test", event);
+    //   //     event.id = snap.payload.doc.id;
+    //   //    console.log(event);
+    //   //    this.eventSource.push(event);
+    //   // })
+    // })
+  }
+  
   ngAfterViewInit() {
-    this.eventSource.push({
-      title: "test",
-      startTime: new Date(Date.UTC(2019, 11, 11)),
-      endTime: new Date(Date.UTC(2019, 11, 11)),
-      allDay: true
-    });
+    for (let i = 1; i < 31; i++) {
+      
+      this.eventSource.push({
+        title: `test - ${i}`,
+        startTime: new Date(Date.UTC(2019, 12, i)),
+        endTime: new Date(Date.UTC(2019, 12, i+1)),
+        allDay: false
+      });
+    }
     this.aCalandar.loadEvents();
+    console.log('hello wtf', this.aCalandar.eventSource);
   }
 
   onViewTitleChanged(title: string): void {
@@ -54,7 +95,7 @@ export class Tab3Page implements AfterViewInit {
       title: "test",
       startTime: new Date(Date.UTC(2019, 11, 11)),
       endTime: new Date(Date.UTC(2019, 11, 11)),
-      allDay: true
+      allDay: false
     });
     this.aCalandar.loadEvents();
   }
@@ -76,20 +117,11 @@ export class Tab3Page implements AfterViewInit {
 
   onTimeSelected(ev: ITimeSelected) {
     const selected = ev.selectedTime;
-
-    this.event.startTime = selected.toISOString();
+    this.event.startOf = selected.toISOString(); 
     selected.setHours(selected.getHours() + 1);
-    this.event.endTime = selected.toISOString();
-    console.log('selected', selected)
-
-    // console.log(
-    //   "Selected time: " +
-    //     ev.selectedTime +
-    //     ", hasEvents: " +
-    //     (ev.events !== undefined && ev.events.length !== 0) +
-    //     ", disabled: " +
-    //     ev.disabled
-    // );
+    this.event.endOf = selected.toISOString();
+   // console.log("selected", selected);  
+    //console.log('hello...', ev.events)
   }
 
   onCurrentDateChanged(event: Date) {
@@ -108,4 +140,5 @@ export class Tab3Page implements AfterViewInit {
   }
 
   // MVP2: read from the database store into event UI
+  
 }

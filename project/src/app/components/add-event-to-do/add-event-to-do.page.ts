@@ -24,7 +24,8 @@ export class AddEventToDoPage implements OnInit {
     private modalCtrl: ModalController
   ) {}
   toDoSelected: boolean;
-
+  isActive: boolean = false; 
+  
   selectType() {
     let options = this.form.get("type").value;
     this.toDoSelected = true;
@@ -34,11 +35,14 @@ export class AddEventToDoPage implements OnInit {
       this.toDoSelected = false;
     }
   }
+
   async closeModal() {
     await this.modalCtrl.dismiss();
   }
   //NEEED to add two seperate add functions --> one for todo and one for event
   // remake the database push function --> calendar
+
+
   ngOnInit() {}
   uuidv4 = require("uuid/v4");
   async add() {
@@ -50,7 +54,7 @@ export class AddEventToDoPage implements OnInit {
     const description = this.form.get("description").value as string;
     const startDate = this.form.get("startDate").value as string;
     const endDate = this.form.get("endDate").value as string;
-
+    const setNotiTime = this.form.get("setNotiTime").value as string;
     this.db.eventToDoInfo(
       this.uuidv4(),
       type,
@@ -60,22 +64,22 @@ export class AddEventToDoPage implements OnInit {
       priority,
       description,
       startDate,
-      endDate
+      endDate,
+      setNotiTime
     );
     this.form.reset();
-
-
   }
   buildForm(): FormGroup {
     return this.fb.group({
-      type: ["", [Validators.required, Validators.minLength(0)]],
-      title: ["", [Validators.required, Validators.minLength(0)]],
+      type: ["", [Validators.required, Validators.minLength(5)]],
+      title: ["", [Validators.required, Validators.minLength(5)]],
       date: ["", [Validators.required]],
-      tag: ["", [Validators.required, Validators.minLength(0)]],
-      priority: ["", [Validators.required, Validators.minLength(0)]],
+      tag: ["", [Validators.required, Validators.minLength(5)]],
+      priority: ["", [Validators.required, Validators.minLength(1)]],
       description: ["", [Validators.required, Validators.minLength(0)]],
       startDate: ["", [Validators.required]],
-      endDate: ["", [Validators.required]]
+      endDate: ["", [Validators.required]],
+      setNotiTime: ["", [Validators.required]]
     });
   }
 }
