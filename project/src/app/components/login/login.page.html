@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>signup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-text *ngIf ="error" > {{Error.message }} </ion-text>
+  <form [formGroup] = "form" [(ngSubmit)] ="login()" >
+
+  <ion-item> 
+    <ion-label>Email:</ion-label>
+    <input type="text" formControlName ="email">
+  </ion-item>
+
+  <ion-item> 
+      <ion-label>Password:</ion-label>
+      <input type="password" formControlName ="password">
+  </ion-item>
+  <ion-button type="submit" color="Dark" expand ="block"> Login</ion-button>
+  </form>
+</ion-content>
