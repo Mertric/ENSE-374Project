@@ -6,6 +6,7 @@ import {AddEventToDoPage} from '../components/add-event-to-do/add-event-to-do.pa
 import { TabsPageRoutingModule } from './tabs-routing.module';
 
 import { TabsPage } from './tabs.page';
+import { SideMenuComponent } from '../components/side-menu/side-menu.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { TabsPage } from './tabs.page';
     TabsPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [TabsPage,AddEventToDoPage],
+  declarations: [TabsPage,AddEventToDoPage, SideMenuComponent],
   entryComponents: [AddEventToDoPage]
   
 })
