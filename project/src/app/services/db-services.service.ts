@@ -9,24 +9,26 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { AddEventToDoPage } from "../components/add-event-to-do/add-event-to-do.page";
 import { Observable, BehaviorSubject } from "rxjs";
 import { map, take } from "rxjs/operators";
-import { ToDo } from "../modals/todo";
-import {ProfileModel} from "../modals/ProfileModel"
-import { User } from 'firebase';
+import { ProfileModel } from "../modals/profile.model";
+import { User } from "firebase";
+import { ToDoModel } from "../modals/todo.model.";
+
 @Injectable({
   providedIn: "root"
 })
 export class DbServicesService {
   /* START OF TODOS */
-  private todosCollection: AngularFirestoreCollection<ToDo>;
-  private dataSource = new BehaviorSubject<ToDo[]>([]);
-  private todos: Observable<ToDo[]> = this.dataSource.asObservable();
+  private todosCollection: AngularFirestoreCollection<ToDoModel>;
+  private dataSource = new BehaviorSubject<ToDoModel[]>([]);
+  private todos: Observable<ToDoModel[]> = this.dataSource.asObservable();
 
   private DATABASE_TODOEVENT = "eventToDoInfo";
 
-  constructor(private db: AngularFirestore , private afAuth: AngularFireAuth) {
+  constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) {
     //this.todos = this.db.collection(this.DATABASE_TODOEVENT).valueChanges();
-    this.todosCollection = db.collection<ToDo>(this.DATABASE_TODOEVENT, ref =>
-      ref.where("TypeToDoOrEvent", "==", "toDo")
+    this.todosCollection = db.collection<ToDoModel>(
+      this.DATABASE_TODOEVENT,
+      ref => ref.where("TypeToDoOrEvent", "==", "toDo")
     );
     this.todos = this.todosCollection.snapshotChanges().pipe(
       map(actions => {
@@ -41,6 +43,7 @@ export class DbServicesService {
 
   eventToDoInfo(
     eventToDoUUID: string,
+    userID: string,
     type: string,
     title: string,
     date: string,
@@ -51,10 +54,14 @@ export class DbServicesService {
     eventEndDate: string,
     notificationTime: string
   ) {
-    const dbStore = this.db
+
+    if(this.afAuth.auth.currentUser)
+    {
+      const dbStore = this.db
       .collection(this.DATABASE_TODOEVENT)
       .doc(eventToDoUUID);
     dbStore.set({
+      todoId: eventToDoUUID,
       TypeToDoOrEvent: type,
       Title: title,
       dateSpan: date,
@@ -65,15 +72,36 @@ export class DbServicesService {
       endOf: eventEndDate,
       notify: notificationTime
     });
+    } 
+    else{
+      const dbStore = this.db
+      .collection('Users/${uid}/eventToDoInfo')
+      .doc(eventToDoUUID);
+    dbStore.set({
+      todoId: eventToDoUUID,
+      userId: userID,
+      TypeToDoOrEvent: type,
+      Title: title,
+      dateSpan: date,
+      HashTag: tag,
+      priorityLevel: priority,
+      descriptionOf: description,
+      startOf: eventStartDate,
+      endOf: eventEndDate,
+      notify: notificationTime
+    });
+
+    }
+
   }
 
   getTodos() {
     return this.todos;
   }
   getToDo(id) {
-    return this.todosCollection.doc<ToDo>(id).valueChanges();
+    return this.todosCollection.doc<ToDoModel>(id).valueChanges();
   }
-  updateTodo(todo: ToDo, id: string) {
+  updateTodo(todo: ToDoModel, id: string) {
     return this.todosCollection.doc(id).update(todo);
   }
 
@@ -93,48 +121,46 @@ export class DbServicesService {
       });
   }
 
-  private _profile$ = new BehaviorSubject<ProfileModel>(null)
-  profile$  = this._profile$.asObservable();
+  private _profile$ = new BehaviorSubject<ProfileModel>(null);
+  profile$ = this._profile$.asObservable();
 
-  getProfile(userID:string):void{
+  getProfile(userID: string): void {
     const dbStore = this.db.collection(this.USER_COLLECTION).doc(userID);
     dbStore.get().subscribe(data => {
-      if(data.exists){
+      if (data.exists) {
         const documentData: DocumentData = data.data();
-        console.log(documentData);
-        this._profile$.next(documentData as ProfileModel)
+        this._profile$.next(documentData as ProfileModel);
       }
-    })
+    });
   }
 
-  isLoggedIn():
-    Observable<User>
-    {
-      return this.afAuth.authState;
-    }
+  isLoggedIn(): Observable<User> {
+    return this.afAuth.authState;
+  }
 
   /* END OF USER METHODS */
 
   /* START OF EVENTS METHODS */
   getEvents() {
-    let eventRef = this.db.collection(this.DATABASE_TODOEVENT);
-    let queryEvent = eventRef.ref
-      .where("TypeToDoOrEvent", "==", "event")
-      .get()
-      .then(snapshot => {
-        if (snapshot.empty) {
-          console.log("No Events");
-          return;
-        }
-        snapshot.forEach(doc => {
-          console.log(doc.id, "=>", doc.data());
+    this.todosCollection = this.db.collection<ToDoModel>(
+      this.DATABASE_TODOEVENT,
+      ref => ref.where("TypeToDoOrEvent", "==", "event")
+    );
+    this.todos = this.todosCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
         });
       })
-      .catch(err => {
-        console.log("Error getting Documents");
-      });
+    );
+  }
 
-    return queryEvent;
+
+  getCurrentUser()
+  {
+    return this.afAuth.auth.currentUser.uid;
   }
 
   // listenToDBEvents(eventSource:any)
