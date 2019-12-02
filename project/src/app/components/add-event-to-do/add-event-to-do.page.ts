@@ -8,7 +8,10 @@ import {
 } from "@angular/forms";
 import { DbServicesService } from "../../services/db-services.service";
 import { ModalController } from "@ionic/angular";
+import { AngularFireAuth } from "@angular/fire/auth";
+
 declare var require: any;
+
 @Component({
   selector: "app-add-event-to-do",
   templateUrl: "./add-event-to-do.page.html",
@@ -17,15 +20,18 @@ declare var require: any;
 export class AddEventToDoPage implements OnInit {
   form: FormGroup = this.buildForm();
   errors: any;
+  toDoSelected: boolean;
+  isActive: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private db: DbServicesService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private afAuth: AngularFireAuth
   ) {}
-  toDoSelected: boolean;
-  isActive: boolean = false; 
-  
+
+  ngOnInit() {}
+
   selectType() {
     let options = this.form.get("type").value;
     this.toDoSelected = true;
@@ -42,12 +48,13 @@ export class AddEventToDoPage implements OnInit {
   //NEEED to add two seperate add functions --> one for todo and one for event
   // remake the database push function --> calendar
 
-
-  ngOnInit() {}
   uuidv4 = require("uuid/v4");
   async add() {
+    console.log(this.afAuth.auth)
+    const userId = this.afAuth.auth.currentUser ? this.afAuth.auth.currentUser.uid : this.db.getCurrentUser();
+    const postId = this.uuidv4.value as string;
     const type = this.form.get("type").value as string;
-    const title = this.form.get("title").value as string;
+    const title = this.form.get("title").value as string
     const date = this.form.get("date").value as string;
     const tag = this.form.get("tag").value as string;
     const priority = this.form.get("priority").value as string;
@@ -55,8 +62,10 @@ export class AddEventToDoPage implements OnInit {
     const startDate = this.form.get("startDate").value as string;
     const endDate = this.form.get("endDate").value as string;
     const setNotiTime = this.form.get("setNotiTime").value as string;
+
     this.db.eventToDoInfo(
-      this.uuidv4(),
+      postId,
+      userId,
       type,
       title,
       date,
@@ -69,17 +78,18 @@ export class AddEventToDoPage implements OnInit {
     );
     this.form.reset();
   }
+
   buildForm(): FormGroup {
     return this.fb.group({
-      type: ["", [Validators.required, Validators.minLength(5)]],
-      title: ["", [Validators.required, Validators.minLength(5)]],
-      date: ["", [Validators.required]],
-      tag: ["", [Validators.required, Validators.minLength(5)]],
-      priority: ["", [Validators.required, Validators.minLength(1)]],
-      description: ["", [Validators.required, Validators.minLength(0)]],
-      startDate: ["", [Validators.required]],
-      endDate: ["", [Validators.required]],
-      setNotiTime: ["", [Validators.required]]
+      type: ["todo", [Validators.required, Validators.minLength(5)]],
+      title: ["a", [Validators.required, Validators.minLength(5)]],
+      date: ["2019/12/12", [Validators.required]],
+      tag: ["a", [Validators.required, Validators.minLength(5)]],
+      priority: [3, [Validators.required, Validators.minLength(1)]],
+      description: ["asd", [Validators.required, Validators.minLength(0)]],
+      startDate: ["2019/12/12", [Validators.required]],
+      endDate: ["2019/12/12", [Validators.required]],
+      setNotiTime: ["2019/12/12", [Validators.required]]
     });
   }
 }

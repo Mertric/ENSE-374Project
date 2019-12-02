@@ -1,4 +1,6 @@
-export interface ToDo {
+export interface ToDoModel {
+    todoId:string
+    userId:string
     HashTag:string;
     TypeToDoOrEvent:string;
     dateSpan?:string;

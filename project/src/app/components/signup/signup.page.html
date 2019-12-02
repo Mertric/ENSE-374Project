@@ -5,23 +5,22 @@
 </ion-header>
 
 <ion-content>
-  <ion-text *ngIf ="error" > {{Error.message }} </ion-text>
-  <form [formGroup] = "form" [(ngSubmit)] ="signup()" >
+  <ion-text *ngIf="error"> {{error.message }} </ion-text>
+  <form [formGroup]="form" (ngSubmit)="signup()">
+    <ion-item>
+      <ion-label>Email:</ion-label>
+      <input type="text" formControlName="email" />
+    </ion-item>
 
-  <ion-item> 
-    <ion-label>Email:</ion-label>
-    <input type="text" formControlName ="email">
-  </ion-item>
-
-  <ion-item> 
+    <ion-item>
       <ion-label>Password:</ion-label>
-      <input type="password" formControlName ="password">
-  </ion-item>
+      <input type="password" formControlName="password" />
+    </ion-item>
 
-  <ion-item> 
+    <ion-item>
       <ion-label>Confirm Password:</ion-label>
-      <input type="password" formControlName ="Cpassword">
-  </ion-item>
-  <ion-button type="submit" color="Dark" expand ="block"> Sign Up</ion-button>
+      <input type="password" formControlName="Cpassword" />
+    </ion-item>
+    <ion-button type="submit" color="Dark" expand="block"> Sign Up</ion-button>
   </form>
 </ion-content>

@@ -1,5 +1,4 @@
-
-<ion-menu contentId="content1" side="start" >
+<ion-menu contentId="menu-content" side="start" >
   <ion-header>
     <ion-toolbar color="primary">
       <ion-title>consilium</ion-title>
@@ -7,7 +6,7 @@
   </ion-header>
   <ion-content>
 
-   <ion-list>
+   <ion-list ng-hide = "isAuthorized()" *ngIf= "!isAuthorized()">
       <ion-button (click) = "SignUp()"> 
         <ion-label>Sign up</ion-label>
       </ion-button>
