@@ -1,9 +1,0 @@
-
-node_modules/.bin/
-node_modules/
-
-project/.vs/VSWorkspaceState.json
-
-project/.vs/slnx.sqlite
-
-project/.vs/project/v16/.suo
