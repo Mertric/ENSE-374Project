@@ -51,8 +51,8 @@ export class AddEventToDoPage implements OnInit {
   uuidv4 = require("uuid/v4");
   async add() {
     console.log(this.afAuth.auth)
-    const userId = this.afAuth.auth.currentUser ? this.afAuth.auth.currentUser.uid : this.db.getCurrentUser();
-    const postId = this.uuidv4.value as string;
+    //const userId = this.afAuth.auth.currentUser ? this.afAuth.auth.currentUser.uid : this.db.getCurrentUser();
+    const postId = this.uuidv4.value;
     const type = this.form.get("type").value as string;
     const title = this.form.get("title").value as string
     const date = this.form.get("date").value as string;
@@ -62,10 +62,10 @@ export class AddEventToDoPage implements OnInit {
     const startDate = this.form.get("startDate").value as string;
     const endDate = this.form.get("endDate").value as string;
     const setNotiTime = this.form.get("setNotiTime").value as string;
-
+    //console.log("this" ,postId)
     this.db.eventToDoInfo(
       postId,
-      userId,
+      //userId,
       type,
       title,
       date,

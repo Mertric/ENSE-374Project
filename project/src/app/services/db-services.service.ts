@@ -9,9 +9,9 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { AddEventToDoPage } from "../components/add-event-to-do/add-event-to-do.page";
 import { Observable, BehaviorSubject } from "rxjs";
 import { map, take } from "rxjs/operators";
-import { ProfileModel } from "../modals/profile.model";
-import { User } from "firebase";
-import { ToDoModel } from "../modals/todo.model.";
+import { ToDoModel } from "../model/todo.model.";
+import { ProfileModel } from '../model/profile.model';
+import { User } from 'firebase';
 
 @Injectable({
   providedIn: "root"
@@ -43,7 +43,7 @@ export class DbServicesService {
 
   eventToDoInfo(
     eventToDoUUID: string,
-    userID: string,
+    //userID: string,
     type: string,
     title: string,
     date: string,
@@ -54,14 +54,9 @@ export class DbServicesService {
     eventEndDate: string,
     notificationTime: string
   ) {
-
-    if(this.afAuth.auth.currentUser)
-    {
-      const dbStore = this.db
-      .collection(this.DATABASE_TODOEVENT)
-      .doc(eventToDoUUID);
-    dbStore.set({
-      todoId: eventToDoUUID,
+    const toQuery = {
+      //todoId: eventToDoUUID,
+      //userId: userID,
       TypeToDoOrEvent: type,
       Title: title,
       dateSpan: date,
@@ -71,28 +66,19 @@ export class DbServicesService {
       startOf: eventStartDate,
       endOf: eventEndDate,
       notify: notificationTime
-    });
-    } 
-    else{
-      const dbStore = this.db
-      .collection('Users/${uid}/eventToDoInfo')
-      .doc(eventToDoUUID);
-    dbStore.set({
-      todoId: eventToDoUUID,
-      userId: userID,
-      TypeToDoOrEvent: type,
-      Title: title,
-      dateSpan: date,
-      HashTag: tag,
-      priorityLevel: priority,
-      descriptionOf: description,
-      startOf: eventStartDate,
-      endOf: eventEndDate,
-      notify: notificationTime
-    });
-
     }
-
+    if (this.afAuth.auth.currentUser) {
+      const dbStore = this.db
+        .collection(this.DATABASE_TODOEVENT)
+        .doc(eventToDoUUID);
+        //toQuery.userId = null;
+      dbStore.set(toQuery);
+    } else {
+      const dbStore = this.db
+        .collection("Users")
+        .doc(eventToDoUUID);
+      dbStore.set(toQuery);
+    }
   }
 
   getTodos() {
@@ -157,9 +143,7 @@ export class DbServicesService {
     );
   }
 
-
-  getCurrentUser()
-  {
+  getCurrentUser() {
     return this.afAuth.auth.currentUser.uid;
   }
 

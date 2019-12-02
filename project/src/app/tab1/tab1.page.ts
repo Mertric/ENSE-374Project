@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NavController, ModalController } from "@ionic/angular";
 import { DbServicesService } from "../services/db-services.service";
-import { ToDoModel } from "../modals/todo.model.";
+import { ToDoModel } from "../model/todo.model.";
 import { Observable, BehaviorSubject } from "rxjs";
 import {
   AngularFirestore,

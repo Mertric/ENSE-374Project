@@ -7,9 +7,11 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
-  { path: 'add-event-to-do', loadChildren: './components/add-event-to-do/add-event-to-do.module#AddEventToDoPageModule' },  { path: 'details', loadChildren: './components/details/details.module#DetailsPageModule' },
+  { path: 'add-event-to-do', loadChildren: './components/add-event-to-do/add-event-to-do.module#AddEventToDoPageModule' },
+  { path: 'details', loadChildren: './components/details/details.module#DetailsPageModule' },
   { path: 'signup', loadChildren: './components/signup/signup.module#SignupPageModule' },
-  { path: 'login', loadChildren: './components/login/login.module#LoginPageModule' }
+  { path: 'login', loadChildren: './components/login/login.module#LoginPageModule' },
+
 
   
 ];

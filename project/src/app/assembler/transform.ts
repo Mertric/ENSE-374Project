@@ -1,5 +1,6 @@
-import { ToDoModel } from '../modals/todo.model.';
-import { EventModel } from '../modals/event.model';
+import { ToDoModel } from '../model/todo.model.';
+import { EventModel } from '../model/event.model';
+
 
 export function assemble(dto: ToDoModel): EventModel {
     // if(!dto){

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { NgCalendarModule } from "ionic2-calendar";
-import { ToDoModel } from "../modals/todo.model.";
+import { ToDoModel } from "../model/todo.model.";
 import { DbServicesService } from "../services/db-services.service";
 import {
   CalendarComponent,

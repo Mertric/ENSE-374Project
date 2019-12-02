@@ -16,6 +16,8 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { environment } from "../environments/environment";
 import {DbServicesService} from "../app/services/db-services.service"
 import {NgCalendarModule} from "ionic2-calendar"
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -29,7 +31,8 @@ import {NgCalendarModule} from "ionic2-calendar"
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    NgCalendarModule
+    NgCalendarModule,
+
   ],
   providers: [
     StatusBar,
