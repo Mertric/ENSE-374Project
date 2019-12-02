@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { NgCalendarModule } from "ionic2-calendar";
-import { ToDo } from "../modals/todo";
+import { ToDoModel } from "../modals/todo.model.";
 import { DbServicesService } from "../services/db-services.service";
 import {
   CalendarComponent,
@@ -33,9 +33,9 @@ export class Tab3Page implements AfterViewInit {
   };
   viewTitle = " ";
 
-  private todosCollection: AngularFirestoreCollection<ToDo>;
-  private dataSource = new BehaviorSubject<ToDo[]>([]);
-  private todos: Observable<ToDo[]> = this.dataSource.asObservable();
+  private todosCollection: AngularFirestoreCollection<ToDoModel>;
+  private dataSource = new BehaviorSubject<ToDoModel[]>([]);
+  private todos: Observable<ToDoModel[]> = this.dataSource.asObservable();
   private DATABASE_TODOEVENT = "eventToDoInfo";
 
   eventSource: {
@@ -53,20 +53,25 @@ export class Tab3Page implements AfterViewInit {
     allday: false
   };
   
-    
+
   
   constructor(private db: DbServicesService , private eventDB: AngularFirestore) {
-    // this.eventDB.collection(this.DATABASE_TODOEVENT,ref => ref.where('TypeToDoOrEvent', '==','event')).snapshotChanges().subscribe(colSnap => {
-    //   // colSnap.forEach(snap => {
-    //   //     let event: any = snap.payload.doc;
-    //   //     console.log(snap.payload.doc)
-    //   //     console.log("this is a test", event);
-    //   //     event.id = snap.payload.doc.id;
-    //   //    console.log(event);
-    //   //    this.eventSource.push(event);
-    //   // })
-    // })
+    this.eventDB.collection(this.DATABASE_TODOEVENT,ref => ref.where('TypeToDoOrEvent', '==','event')).snapshotChanges().subscribe(colSnap => {
+      colSnap.forEach(snap => {
+          let event: any = snap.payload.doc.data();
+          console.log(snap.payload.doc)
+          console.log("this is a test", event);
+          event.id = snap.payload.doc.id;
+         console.log(event);
+         this.eventSource.push(event);
+      })
+    })
   }
+
+      ngOnInit()
+    {
+      this.db.getEvents();
+    }
   
   ngAfterViewInit() {
     for (let i = 1; i < 31; i++) {
